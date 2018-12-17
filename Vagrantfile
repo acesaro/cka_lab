@@ -14,7 +14,8 @@ Vagrant.configure("2") do |config|
     master.vm.provision "shell", path: "provision/master_init.sh", privileged: false
     for p in [:virtualbox, :libvirt] do
       master.vm.provider p do |provider|
-        provider.memory = 2048
+        provider.memory = 1500
+        provider.cpus = 2
       end
     end
   end
@@ -24,7 +25,8 @@ Vagrant.configure("2") do |config|
     node1.vm.network "private_network", ip: "192.168.33.21"
     for p in [:virtualbox, :libvirt] do
       node1.vm.provider p do |provider|
-        provider.memory = 2048
+        provider.memory = 1500
+        provider.cpus = 2
       end
     end
   end
@@ -34,7 +36,8 @@ Vagrant.configure("2") do |config|
     node2.vm.network "private_network", ip: "192.168.33.22"
     for p in [:virtualbox, :libvirt] do
       node2.vm.provider p do |provider|
-        provider.memory = 2048
+        provider.memory = 1500
+        provider.cpus = 2
       end
     end
   end
