@@ -12,8 +12,12 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-curl -o /tmp/kube-flannel.yml https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
-sed -i.bak 's|"/opt/bin/flanneld",|"/opt/bin/flanneld", "--iface=eth1",|' /tmp/kube-flannel.yml
-kubectl apply -f /tmp/kube-flannel.yml
+curl -o /tmp/rbac-kdd.yaml https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
+curl -o /tmp/calico.yaml https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
+
+sed -i.bak 's|192.168.0.0/16|10.244.0.0/16|g' /tmp/calico.yaml
+for i in rbac-kdd.yaml calico.yaml; do
+  kubectl apply -f /tmp/${i}
+done
 
 echo 'source <(kubectl completion bash)' >> $HOME/.bashrc

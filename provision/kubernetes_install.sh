@@ -29,4 +29,6 @@ sysctl --system
 
 sed -i "s/cgroup-driver=systemd/cgroup-driver=cgroupfs/g" /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
+echo "KUBELET_EXTRA_ARGS=--node-ip=$(hostname -I | awk '{print $2}')" > /etc/sysconfig/kubelet
+
 systemctl enable kubelet && systemctl start kubelet
